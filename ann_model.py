@@ -46,7 +46,8 @@ class AnnModel:
     def test(self, x_test, y_test):
         correct0 = 0
         correct1 = 0
-        no = 0
+        no1 = 0
+        no0 = 1
         with torch.no_grad():
             for i, data in enumerate(x_test):
                 y_val = self.model.forward(data)
@@ -57,7 +58,11 @@ class AnnModel:
                     else:
                         correct0 += 1
                 else:
-                    no += 1
-        print(f'We got {correct0}, {correct1} correct no {no} : {(correct0+correct1)/(correct0+correct1+no)}.')
+                    if y_test[i]:
+                        no1 += 1
+                    else:
+                        no0 += 1
+
+        print(f'We got {correct0}, {correct1} correct no {no1}, {no0} : {(correct0+correct1)/(correct0+correct1+no1+no0)}.')
 
 # End of class AnnModel:

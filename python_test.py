@@ -1,3 +1,6 @@
+import pandas as pd
+from sklearn import preprocessing
+
 import torch
 import torch.optim as optim
 
@@ -20,11 +23,12 @@ import torch.optim as optim
 # c.backward()
 # o.step()
 
-x = 2.0
-w = torch.tensor(x, requires_grad=True)
+data = {'score': [234, 24, 14, 27, 74, 46, 73, 18, 59, 160]}
+cols = data.columns
+df = pd.DataFrame(data)
+df
 
-nb_epochs = 20
-for epoch in range(nb_epochs + 1):
-    z = 2*w
-    z.backward()
-    print(f'수식을 w로 미분한 값 : {w.grad}')
+min_max_scaler = preprocessing.MinMaxScaler()
+np_scaled = min_max_scaler.fit_transform(df)
+df_normalized = pd.DataFrame(np_scaled, columns = cols)
+df_normalized
