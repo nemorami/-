@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn import preprocessing
-
+import numpy as np
 import torch
 import torch.optim as optim
 
@@ -23,12 +23,13 @@ import torch.optim as optim
 # c.backward()
 # o.step()
 
-data = {'score': [234, 24, 14, 27, 74, 46, 73, 18, 59, 160]}
-cols = data.columns
-df = pd.DataFrame(data)
-df
+# arr = np.array([[1,2,3], [4,5,6]])
 
-min_max_scaler = preprocessing.MinMaxScaler()
-np_scaled = min_max_scaler.fit_transform(df)
-df_normalized = pd.DataFrame(np_scaled, columns = cols)
-df_normalized
+
+## 데이터 준비
+# data = {
+#     'Hero':['Jack','Michael','Jim','Mengsk'],
+#     'Age':[21,33,45,56]
+# }
+# df = pd.DataFrame(data)
+# print(df)
