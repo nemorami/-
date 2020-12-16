@@ -9,17 +9,21 @@ class AnnKeras:
         self.y_train = y_train
         self.X_test = X_test
         self.y_test = y_test
-
-    def set_embedding(self, categories):
         self.ins = []
         self.concat = []
+        #self.model = 0
+
+    def set_embedding(self, categories):
+
         for i in range(self.X_train.shape[1]):
-            x = Input(shape=(1,), name = self.X_train.columns[i])
+            c_names = self.X_train.columns[i]
+            print(c_names)
+            x = Input(shape=(1,), name = c_names)
             self.ins.append(x)
             if i in categories:
                 ncount = self.X_train.iloc[:,i].nunique()
-                x = Embedding(input_dim=ncount, output_dim=min(1000, ncount//2 + 1))(x)
-                x = Flatten()(x)
+                x = Embedding(input_dim=ncount+1, output_dim=min(1000, ncount//2 + 1), name='Embedding_'+c_names)(x)
+                x = Flatten(name='Flatten_'+c_names)(x)
 
             self.concat.append(x)
 
@@ -32,21 +36,21 @@ class AnnKeras:
         self.model.compile(optimizer='adam', loss='binary_crossentropy')
 
     def fit(self):
-        X_train = {}
+        x_train = {}
         for vars in self.X_train.columns.tolist():
-            X_train[vars] = self.X_train[vars].values
-        print(X_train)
-        #self.model.fit(X_train, self.y_train, epochs=2)
+            x_train[vars] = self.X_train[vars].values
+
+        self.model.fit(x_train, self.y_train, epochs=2)
         #self.model.summary()
         #print(self.X_train)
 
     def predict(self):
-        X_test = {}
+        x_test = {}
         for vars in self.X_test.columns.tolist():
-            X_test[vars] = self.X_test[vars].values
+            x_test[vars] = self.X_test[vars].values
 
-        y_pred = self.model.predict(X_test)
-        print(y_pred)
+        y_pred = self.model.predict(x_test)
+        print(y_pred.reshape(-1))
 
 
 
