@@ -21,7 +21,7 @@ class AnnKeras:
             x = Input(shape=(1,), name = c_names)
             self.ins.append(x)
             if i in categories:
-                ncount = self.X_train.iloc[:,i].nunique()
+                ncount = self.X_train.iloc[:,i].max()
                 x = Embedding(input_dim=ncount+1, output_dim=min(1000, ncount//2 + 1), name='Embedding_'+c_names)(x)
                 x = Flatten(name='Flatten_'+c_names)(x)
 
@@ -40,7 +40,7 @@ class AnnKeras:
         for vars in self.X_train.columns.tolist():
             x_train[vars] = self.X_train[vars].values
 
-        self.model.fit(x_train, self.y_train, epochs=2)
+        self.model.fit(x_train, self.y_train, batch_size=256,  epochs=2)
         #self.model.summary()
         #print(self.X_train)
 
